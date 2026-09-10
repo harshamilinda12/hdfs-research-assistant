@@ -1,0 +1,21 @@
+# Environment variables (API keys)
+.env
+
+# Python virtual environment
+# virtual environments are machine specific and huge
+# regenerate them from requirements.txt, never commit them.
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Vector store data (will be generated locally, don't need in git)
+# your vector database will be built from your PDFs
+# it's derived data. Good git discipline = don't commit things you can regenerate from source.
+chroma_db/
+*.index
+
+# OS/editor junk
+.DS_Store
+.vscode/settings.json
