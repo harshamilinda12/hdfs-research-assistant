@@ -19,14 +19,27 @@ def ask_llm(prompt,system_prompt="You are a helpful assistant."):
         {"role":"user","content":prompt}
         ]
     }
-    response=requests.post(url,headers=headers,json=payload)
-    answer=response.json()["choices"][0]["message"]["content"]
+
+    try:
+        response=requests.post(url,headers=headers,json=payload,timeout=30)
+        response.raise_for_status() #Raise an exception for HTTP errors 
+        answer=response.json()["choices"][0]["message"]["content"]
+        return answer
     
-    return answer
+    except requests.exceptions.Timeout:
+        return "Error: The request to the LLM timed out. Please try again."
+
+    except requests.exceptions.ConnectionError:
+        return "Error: Could not connect to the LLM API. Check your internet connection."
+
+    except requests.exceptions.HTTPError as e:
+        return f"Error: LLM API returned an error — {e}"
+
+    except (KeyError, IndexError):
+        return "Error: Unexpected response format from the LLM API."
 
 #headers contains additional information that you're sending along with the HTTP request.
 #payload contains the actual information you're sending to the LLM.
-
 #if __name__=="__main__":#this bit is for testing this file alone
   #   question = "In one sentence, what is root cause localization in the context of log anomaly detection?"
    #  print(ask_llm(question))
