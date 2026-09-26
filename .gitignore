@@ -19,3 +19,6 @@ chroma_db/
 # OS/editor junk
 .DS_Store
 .vscode/settings.json
+
+# Research papers
+papers/*.pdf
